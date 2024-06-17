@@ -1,19 +1,3 @@
-######################################################################################88
-
-FREDHUTCH_HACKS = False # silly stuff Phil added for running on Hutch servers
-if FREDHUTCH_HACKS:
-    import os
-    from shutil import which
-    os.environ['XLA_FLAGS']='--xla_gpu_force_compilation_parallelism=1'
-    os.environ["TF_FORCE_UNIFIED_MEMORY"] = '1'
-    os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = '2.0'
-    assert which('ptxas') is not None
-    # this probably needs customizing...
-    assert os.environ['LD_LIBRARY_PATH'].startswith(
-        '/home/pbradley/anaconda2/envs/af2/lib:'),\
-        'export LD_LIBRARY_PATH=/home/pbradley/anaconda2/envs/af2/lib:$LD_LIBRARY_PATH'
-
-
 """CLI command for running AlphaFold inference on a set of targets."""
 from typing import List
 import click as ck 
@@ -24,34 +8,23 @@ import sys
 import itertools
 import tcrdock
 
-
 from os.path import exists
 from pathlib import Path
 
-import argparse
-parser = argparse.ArgumentParser(
-    description="",
- 
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-)
-
-
-
-
-###########################
 epilog = """ 
     This script is borrowed from the original here:
     https://github.com/phbradley/alphafold_finetune/blob/main/run_prediction.py
 
     Examples:
 
+    \b
     # The test_setup_single/ directory would first be made by running the
     # `tcrdock setup` command.
-
-    tcrdock run --targets test_setup_single/targets.tsv \
-        --outfile-prefix test_run_single --model-names model_2_ptm \
+    
+    \b
+    tcrdock run --targets test_setup_single/targets.tsv 
+        --outfile-prefix test_run_single --model-names model_2_ptm 
         --data-dir $ALPHAFOLD_DATA_DIR
-
 """
 from tcrdock.cli import context_settings
 context_settings.update(
@@ -277,4 +250,3 @@ def run(
         outfile = f'{outfile_prefix}_final.tsv'
         pd.DataFrame(final_dfl).to_csv(outfile, sep='\t', index=False)
         print('made:', outfile)
-
