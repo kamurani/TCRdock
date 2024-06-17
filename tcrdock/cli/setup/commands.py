@@ -9,29 +9,130 @@ import argparse
 from pathlib import Path
 
 required_columns = "organism mhc_class mhc peptide va ja cdr3a vb jb cdr3b".split()
+epilog = """
+    The --targets-tsvfile file should contain the columns
 
+    organism = 'mouse' or 'human'
+    mhc_class = 1 or 2
+    mhc = the MHC allele, e.g. 'A*02:01' or 'H2Db'
+    peptide = the peptide sequence, for MHC class 2 should have length exactly 11
+              (the 9 residue core plus 1 residue on either side)
+    va = V-alpha gene
+    ja = J-alpha gene
+    cdr3a = CDR3-alpha sequence, starts with C, ends with the F/W/etc right before the
+            GXG sequence in the J gene
+    vb = V-beta gene
+    jb = J-beta gene
+    cdr3b = CDR3-beta sequence, starts with C, ends with the F/W/etc right before the
+            GXG sequence in the J gene
 
-def normalise(name):
-    return name.replace("_", "-")
+    Check out the input files in the examples below.
 
-context_settings = {"token_normalize_func": normalise}
+Examples:
 
-@ck.command(context_settings=context_settings)
+tcrdock setup --targets-tsvfile examples/benchmark/single_target.tsv \\
+    --output-dir test_setup_single
+
+or
+
+tcrdock setup --targets-tsvfile examples/benchmark/full_benchmark.tsv \\
+    --output-dir test_setup_full_benchmark --benchmark
+"""
+
+from tcrdock.cli import context_settings 
+
+context_settings.update(
+    show_default=True,
+    help_option_names=["-h", "--help"],
+)
+
+@ck.command(
+        epilog=epilog,
+        context_settings=context_settings, 
+)
 @ck.option(
     "-t", "--targets-tsvfile", 
-    #"--targets_tsvfile", 
     required=True,
-    help="TSV formatted file with info on modeling targets",
+    help="TSV formatted file with info on modeling targets.",
     type=ck.Path(exists=True, file_okay=True, readable=True,
         resolve_path=True, path_type=Path), 
 )
+@ck.option(
+    "-o", "--output-dir", 
+    required=True,
+    help="directory where the outputs will go; preferably empty "
+        "or nonexistent (will create).",
+    type=ck.Path(exists=False, file_okay=False, writable=True, 
+        resolve_path=True, path_type=Path), 
+)
+@ck.option(
+    "-n", "--num-runs", 
+    default=3,
+    help="Number of AlphaFold runs per target.",
+    type=ck.INT,
+    show_default=True,
+)
+@ck.option(
+    "--benchmark/--no-benchmark", "-B", default=False, 
+    help="Exclude sequence-similar templates (for benchmarking).",
+    type=ck.BOOL,
+)
+@ck.option(
+    "--maintain-relative-paths/--absolute-paths", "-R", default=False, 
+    help="Keep the file paths in the targets and alignments files "
+        "relative (assuming --output_dir is a relative path), rather "
+        "than trying to resolve to absolute paths.",
+    type=ck.BOOL,
+)
+@ck.option(
+    "--exclude-pdbids-column", 
+    help="Column in the --targets-tsvfile file with comma-separated "
+        "lists of PDB files to exclude from modeling.",
+    type=ck.STRING,
+)
+@ck.option(
+    "--new-docking/--old-docking", "-N", default=False, 
+    help="Use a new, unpublished approach for constructing the "
+        "TCR:pMHC docking geometry in the AlphaFold templates. "
+        "This only requires 1 run per target (ie, it is 3x faster than "
+        "the default) and preliminary tests of the fine-tuned version "
+        "are promising.",
+    type=ck.BOOL,
+)
 def setup(
-    targets_tsvfile, 
+    targets_tsvfile: Path, 
+    output_dir: Path,
+    benchmark: bool,
+    maintain_relative_paths: bool,
+    exclude_pdbids_column: str,
+    new_docking: bool,
 ):
-    """CLI command for setting up AlphaFold modeling of TCR:pMHC complexes.
+    """
+    Create <OUTPUT_DIR>/targets.tsv file and associated input files for AlphaFold modeling with the `tcrdock run` command.
     
+    \f 
+
+    Parameters
+    ----------
+    targets_tsvfile : Path
+        Path to the TSV formatted file with info on modeling targets.
+    output_dir : Path
+        Path to the directory where the outputs will go.
+    benchmark : bool
+        Exclude sequence-similar templates (for benchmarking).
+    maintain_relative_paths : bool
+        Keep the file paths in the targets and alignments files relative (assuming --output_dir is a relative path), rather than trying to resolve to absolute paths.
+    exclude_pdbids_column : str
+        Column in the --targets_tsvfile file with comma-separated lists of PDB files to exclude from modeling.
+    new_docking : bool
+        Use a new, unpublished approach for constructing the TCR:pMHC docking geometry in the AlphaFold templates.
+
+    Returns
+    -------
+    None
     """
     # load
+    print(type(targets_tsvfile))
     targets = pd.read_table(targets_tsvfile)
     print(targets.head())
 
