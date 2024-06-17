@@ -12,6 +12,7 @@ required_columns = "organism mhc_class mhc peptide va ja cdr3a vb jb cdr3b".spli
 epilog = """
     The --targets-tsvfile file should contain the columns
 
+    \b
     organism = 'mouse' or 'human'
     mhc_class = 1 or 2
     mhc = the MHC allele, e.g. 'A*02:01' or 'H2Db'
