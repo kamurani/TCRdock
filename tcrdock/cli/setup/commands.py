@@ -105,7 +105,7 @@ def setup(
     exclude_pdbids_column: str,
     new_docking: bool,
     max_content_width: int = 120,
-):
+) -> None:
     """
     Create <OUTPUT_DIR>/targets.tsv file and associated input files for AlphaFold modeling with the `tcrdock run` command.
     
