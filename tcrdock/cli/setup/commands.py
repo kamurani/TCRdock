@@ -11,7 +11,12 @@ from pathlib import Path
 required_columns = "organism mhc_class mhc peptide va ja cdr3a vb jb cdr3b".split()
 
 
-@ck.command()
+def normalise(name):
+    return name.replace("_", "-")
+
+context_settings = {"token_normalize_func": normalise}
+
+@ck.command(context_settings=context_settings)
 @ck.option(
     "-t", "--targets-tsvfile", 
     #"--targets_tsvfile", 
