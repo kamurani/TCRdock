@@ -3,10 +3,11 @@
 import os
 from setuptools import find_packages, setup
 
+NAME = "tcrdock"
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__)) 
-
+cli_entry_point = f"{NAME}.cli.cli:entry_point"
 setup(
-    name="tcrdock",
+    name=NAME,
     version="2.0.0",
     description="Python tools for TCR:peptide-MHC modeling and analysis",
     long_description="Python tools for TCR:peptide-MHC modeling and analysis",
@@ -26,8 +27,8 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "tcrdock = tcrdock.cli:main",
-            "tcrd = tcrdock.cli:main",
+            f"tcrdock = {cli_entry_point}",
+            f"tcrd = {cli_entry_point}",        # alias for quicker typing 
         ],
     },
 )

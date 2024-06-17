@@ -47,10 +47,7 @@ context_settings.update(
     help_option_names=["-h", "--help"],
 )
 
-@ck.command(
-        epilog=epilog,
-        context_settings=context_settings, 
-)
+@ck.command(epilog=epilog, context_settings=context_settings)
 @ck.option(
     "-t", "--targets-tsvfile", 
     required=True,
@@ -107,12 +104,12 @@ def setup(
     maintain_relative_paths: bool,
     exclude_pdbids_column: str,
     new_docking: bool,
+    max_content_width: int = 120,
 ):
     """
     Create <OUTPUT_DIR>/targets.tsv file and associated input files for AlphaFold modeling with the `tcrdock run` command.
     
     \f 
-
     Parameters
     ----------
     targets_tsvfile : Path
@@ -127,21 +124,14 @@ def setup(
         Column in the --targets_tsvfile file with comma-separated lists of PDB files to exclude from modeling.
     new_docking : bool
         Use a new, unpublished approach for constructing the TCR:pMHC docking geometry in the AlphaFold templates.
+    max_content_width : int
+        Maximum width of the terminal rewrapping. 
 
     Returns
     -------
     None
     """
-    # load
-    print(type(targets_tsvfile))
-    targets = pd.read_table(targets_tsvfile)
-    print(targets.head())
-
-
-    exit()
-
-
-    if args.benchmark:
+    if benchmark:
         exclude_self_peptide_docking_geometries = True
         min_single_chain_tcrdist = 36
         min_pmhc_peptide_mismatches = 3
@@ -168,16 +158,16 @@ def setup(
     ok = tcrdock.sequtil.check_genes_for_modeling(targets)
 
     if not ok:
-        print(f'ERROR some of the genes in {args.targets_tsvfile} are problematic,'
+        print(f'ERROR some of the genes in {targets_tsvfile} are problematic,'
             ' see error messages above')
         sys.exit()
 
     # make the output dir
-    output_dir = args.output_dir
+    output_dir = output_dir
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
 
-    if not args.maintain_relative_paths:
+    if not maintain_relative_paths:
         # since we are saving filenames to the targets/templates files, we want these
         # to work from wherever AlphaFold is eventually run, so try to make them
         # absolute file paths
@@ -186,7 +176,7 @@ def setup(
     if not output_dir.endswith('/'):
         output_dir += '/' # this will cause issues on windows but code later assumes it...
 
-    num_runs = 1 if args.new_docking else args.num_runs
+    num_runs = 1 if new_docking else num_runs
 
     # run the setup code
     tcrdock.sequtil.setup_for_alphafold(
@@ -198,6 +188,6 @@ def setup(
         min_dgeom_peptide_mismatches=min_dgeom_peptide_mismatches, #
         min_dgeom_paired_tcrdist = min_dgeom_paired_tcrdist, #
         min_dgeom_singlechain_tcrdist = min_dgeom_singlechain_tcrdist,
-        exclude_pdbids_column = args.exclude_pdbids_column,
-        use_opt_dgeoms = args.new_docking,
+        exclude_pdbids_column = exclude_pdbids_column,
+        use_opt_dgeoms = new_docking,
     )
