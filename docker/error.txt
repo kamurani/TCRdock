@@ -1,0 +1,226 @@
+[+] Building 236.7s (11/18)                                                                                                                       docker:default
+ => [internal] load build definition from Dockerfile                                                                                                        0.0s
+ => => transferring dockerfile: 2.64kB                                                                                                                      0.0s
+ => [internal] load metadata for docker.io/nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04                                                                      1.6s
+ => [internal] load .dockerignore                                                                                                                           0.0s
+ => => transferring context: 2B                                                                                                                             0.0s
+ => CACHED [ 1/15] FROM docker.io/nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04@sha256:8f9dd0d09d3ad3900357a1cf7f887888b5b74056636cd6ef03c160c3cd4b1d95       0.0s
+ => [ 2/15] RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)"                                       0.3s
+ => [ 3/15] RUN apt-get update &&     apt-get upgrade -y &&     apt-get install -y     git     wget                                                        87.2s
+ => [ 4/15] WORKDIR /opt                                                                                                                                    0.0s 
+ => [ 5/15] RUN git clone --depth 1 --branch v2.0.0 https://github.com/phbradley/TCRdock.git                                                               10.3s 
+ => [ 6/15] RUN mkdir -p /opt/miniconda3 &&     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda3/miniconda.sh  9.6s 
+ => [ 7/15] RUN conda install -y -c conda-forge     openmm=7.7.0     pdbfixer=1.8.1     python=3.10     pip=23.3     matplotlib=3.4.3 &&     conda clean   53.7s 
+ => ERROR [ 8/15] RUN pip install --upgrade --no-cache-dir     absl-py==1.0.0     biopython==1.79     chex==0.0.7     dm-haiku==0.0.10     dm-tree==0.1.8  72.9s 
+------                                                                                                                                                           
+ > [ 8/15] RUN pip install --upgrade --no-cache-dir     absl-py==1.0.0     biopython==1.79     chex==0.0.7     dm-haiku==0.0.10     dm-tree==0.1.8     docker==5.0.0     immutabledict==2.0.0     jax==0.3.25     https://storage.googleapis.com/jax-releases/cuda11/jaxlib-0.3.25+cuda11.cudnn805-cp310-cp310-manylinux2014_x86_64.whl     ml-collections==0.1.0     numpy==1.24.3     pandas==2.0.3     scipy==1.11.1     tensorflow-cpu==2.13.0:                                                
+0.535 Collecting jaxlib==0.3.25+cuda11.cudnn805                                                                                                                  
+1.144   Downloading https://storage.googleapis.com/jax-releases/cuda11/jaxlib-0.3.25+cuda11.cudnn805-cp310-cp310-manylinux2014_x86_64.whl (241.6 MB)             
+11.33      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 241.6/241.6 MB 27.8 MB/s eta 0:00:00
+11.60 Collecting absl-py==1.0.0
+11.62   Downloading absl_py-1.0.0-py3-none-any.whl.metadata (2.3 kB)
+11.91 Collecting biopython==1.79
+11.91   Downloading biopython-1.79-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+12.13 Collecting chex==0.0.7
+12.14   Downloading chex-0.0.7-py3-none-any.whl.metadata (14 kB)
+12.36 Collecting dm-haiku==0.0.10
+12.56   Downloading dm_haiku-0.0.10-py3-none-any.whl.metadata (18 kB)
+12.60 Collecting dm-tree==0.1.8
+12.61   Downloading dm_tree-0.1.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.9 kB)
+12.65 Collecting docker==5.0.0
+12.66   Downloading docker-5.0.0-py2.py3-none-any.whl.metadata (3.5 kB)
+12.88 Collecting immutabledict==2.0.0
+12.88   Downloading immutabledict-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+12.92 Collecting jax==0.3.25
+12.93   Downloading jax-0.3.25.tar.gz (1.1 MB)
+12.95      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 70.4 MB/s eta 0:00:00
+13.05   Preparing metadata (setup.py): started
+13.21   Preparing metadata (setup.py): finished with status 'done'
+13.43 Collecting ml-collections==0.1.0
+13.44   Downloading ml_collections-0.1.0-py3-none-any.whl.metadata (18 kB)
+13.61 Collecting numpy==1.24.3
+13.62   Downloading numpy-1.24.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.6 kB)
+13.72 Collecting pandas==2.0.3
+13.72   Downloading pandas-2.0.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (18 kB)
+13.83 Collecting scipy==1.11.1
+13.84   Downloading scipy-1.11.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (59 kB)
+13.84      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.1/59.1 kB 194.8 MB/s eta 0:00:00
+14.09 Collecting tensorflow-cpu==2.13.0
+14.30   Downloading tensorflow_cpu-2.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.4 kB)
+14.30 Requirement already satisfied: six in ./miniconda3/lib/python3.10/site-packages (from absl-py==1.0.0) (1.16.0)
+14.32 Collecting toolz>=0.9.0 (from chex==0.0.7)
+14.33   Downloading toolz-0.12.1-py3-none-any.whl.metadata (5.1 kB)
+14.54 Collecting jmp>=0.0.2 (from dm-haiku==0.0.10)
+14.55   Downloading jmp-0.0.4-py3-none-any.whl.metadata (8.9 kB)
+14.56 Collecting tabulate>=0.8.9 (from dm-haiku==0.0.10)
+14.56   Downloading tabulate-0.9.0-py3-none-any.whl.metadata (34 kB)
+14.59 Collecting websocket-client>=0.32.0 (from docker==5.0.0)
+14.60   Downloading websocket_client-1.8.0-py3-none-any.whl.metadata (8.0 kB)
+14.63 Requirement already satisfied: requests!=2.18.0,>=2.14.2 in ./miniconda3/lib/python3.10/site-packages (from docker==5.0.0) (2.32.3)
+14.66 Collecting opt_einsum (from jax==0.3.25)
+14.66   Downloading opt_einsum-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+14.69 Collecting typing_extensions (from jax==0.3.25)
+14.69   Downloading typing_extensions-4.12.2-py3-none-any.whl.metadata (3.0 kB)
+14.73 Collecting PyYAML (from ml-collections==0.1.0)
+14.73   Downloading PyYAML-6.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.1 kB)
+14.74 Collecting contextlib2 (from ml-collections==0.1.0)
+14.74   Downloading contextlib2-21.6.0-py2.py3-none-any.whl.metadata (4.1 kB)
+14.80 Requirement already satisfied: python-dateutil>=2.8.2 in ./miniconda3/lib/python3.10/site-packages (from pandas==2.0.3) (2.9.0)
+14.84 Collecting pytz>=2020.1 (from pandas==2.0.3)
+14.84   Downloading pytz-2024.1-py2.py3-none-any.whl.metadata (22 kB)
+14.86 Collecting tzdata>=2022.1 (from pandas==2.0.3)
+14.86   Downloading tzdata-2024.1-py2.py3-none-any.whl.metadata (1.4 kB)
+14.93 Collecting astunparse>=1.6.0 (from tensorflow-cpu==2.13.0)
+14.95   Downloading astunparse-1.6.3-py2.py3-none-any.whl.metadata (4.4 kB)
+14.96 Collecting flatbuffers>=23.1.21 (from tensorflow-cpu==2.13.0)
+14.96   Downloading flatbuffers-24.3.25-py2.py3-none-any.whl.metadata (850 bytes)
+14.98 Collecting gast<=0.4.0,>=0.2.1 (from tensorflow-cpu==2.13.0)
+14.98   Downloading gast-0.4.0-py3-none-any.whl.metadata (1.1 kB)
+14.99 Collecting google-pasta>=0.1.1 (from tensorflow-cpu==2.13.0)
+14.99   Downloading google_pasta-0.2.0-py3-none-any.whl.metadata (814 bytes)
+15.38 Collecting grpcio<2.0,>=1.24.3 (from tensorflow-cpu==2.13.0)
+15.38   Downloading grpcio-1.64.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+15.42 Collecting h5py>=2.9.0 (from tensorflow-cpu==2.13.0)
+15.42   Downloading h5py-3.11.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.5 kB)
+15.44 Collecting keras<2.14,>=2.13.1 (from tensorflow-cpu==2.13.0)
+15.45   Downloading keras-2.13.1-py3-none-any.whl.metadata (2.4 kB)
+15.46 Collecting libclang>=13.0.0 (from tensorflow-cpu==2.13.0)
+15.46   Downloading libclang-18.1.1-py2.py3-none-manylinux2010_x86_64.whl.metadata (5.2 kB)
+15.47 Requirement already satisfied: packaging in ./miniconda3/lib/python3.10/site-packages (from tensorflow-cpu==2.13.0) (24.1)
+15.62 Collecting protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 (from tensorflow-cpu==2.13.0)
+15.62   Downloading protobuf-4.25.3-cp37-abi3-manylinux2014_x86_64.whl.metadata (541 bytes)
+15.62 Requirement already satisfied: setuptools in ./miniconda3/lib/python3.10/site-packages (from tensorflow-cpu==2.13.0) (70.1.0)
+15.64 Collecting tensorboard<2.14,>=2.13 (from tensorflow-cpu==2.13.0)
+15.64   Downloading tensorboard-2.13.0-py3-none-any.whl.metadata (1.8 kB)
+15.66 Collecting tensorflow-estimator<2.14,>=2.13.0 (from tensorflow-cpu==2.13.0)
+15.66   Downloading tensorflow_estimator-2.13.0-py2.py3-none-any.whl.metadata (1.3 kB)
+15.67 Collecting termcolor>=1.1.0 (from tensorflow-cpu==2.13.0)
+15.67   Downloading termcolor-2.4.0-py3-none-any.whl.metadata (6.1 kB)
+15.68 Collecting typing_extensions (from jax==0.3.25)
+15.69   Downloading typing_extensions-4.5.0-py3-none-any.whl.metadata (8.5 kB)
+15.75 Collecting wrapt>=1.11.0 (from tensorflow-cpu==2.13.0)
+15.75   Downloading wrapt-1.16.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+15.78 Collecting tensorflow-io-gcs-filesystem>=0.23.1 (from tensorflow-cpu==2.13.0)
+15.78   Downloading tensorflow_io_gcs_filesystem-0.37.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+15.79 Requirement already satisfied: wheel<1.0,>=0.23.0 in ./miniconda3/lib/python3.10/site-packages (from astunparse>=1.6.0->tensorflow-cpu==2.13.0) (0.43.0)
+15.87 Requirement already satisfied: charset-normalizer<4,>=2 in ./miniconda3/lib/python3.10/site-packages (from requests!=2.18.0,>=2.14.2->docker==5.0.0) (2.0.4)
+15.87 Requirement already satisfied: idna<4,>=2.5 in ./miniconda3/lib/python3.10/site-packages (from requests!=2.18.0,>=2.14.2->docker==5.0.0) (3.7)
+15.87 Requirement already satisfied: urllib3<3,>=1.21.1 in ./miniconda3/lib/python3.10/site-packages (from requests!=2.18.0,>=2.14.2->docker==5.0.0) (2.2.2)
+15.87 Requirement already satisfied: certifi>=2017.4.17 in ./miniconda3/lib/python3.10/site-packages (from requests!=2.18.0,>=2.14.2->docker==5.0.0) (2024.6.2)
+16.00 Collecting google-auth<3,>=1.6.3 (from tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.00   Downloading google_auth-2.30.0-py2.py3-none-any.whl.metadata (4.7 kB)
+16.01 Collecting google-auth-oauthlib<1.1,>=0.5 (from tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.02   Downloading google_auth_oauthlib-1.0.0-py2.py3-none-any.whl.metadata (2.7 kB)
+16.03 Collecting markdown>=2.6.8 (from tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.04   Downloading Markdown-3.6-py3-none-any.whl.metadata (7.0 kB)
+16.09 Collecting tensorboard-data-server<0.8.0,>=0.7.0 (from tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.09   Downloading tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl.metadata (1.1 kB)
+16.11 Collecting werkzeug>=1.0.1 (from tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.12   Downloading werkzeug-3.0.3-py3-none-any.whl.metadata (3.7 kB)
+16.22 Collecting cachetools<6.0,>=2.0.0 (from google-auth<3,>=1.6.3->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.22   Downloading cachetools-5.3.3-py3-none-any.whl.metadata (5.3 kB)
+16.24 Collecting pyasn1-modules>=0.2.1 (from google-auth<3,>=1.6.3->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.24   Downloading pyasn1_modules-0.4.0-py3-none-any.whl.metadata (3.4 kB)
+16.26 Collecting rsa<5,>=3.1.4 (from google-auth<3,>=1.6.3->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.26   Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+16.29 Collecting requests-oauthlib>=0.7.0 (from google-auth-oauthlib<1.1,>=0.5->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.29   Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+16.37 Collecting MarkupSafe>=2.1.1 (from werkzeug>=1.0.1->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.37   Downloading MarkupSafe-2.1.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.0 kB)
+16.42 Collecting pyasn1<0.7.0,>=0.4.6 (from pyasn1-modules>=0.2.1->google-auth<3,>=1.6.3->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.42   Downloading pyasn1-0.6.0-py2.py3-none-any.whl.metadata (8.3 kB)
+16.44 Collecting oauthlib>=3.0.0 (from requests-oauthlib>=0.7.0->google-auth-oauthlib<1.1,>=0.5->tensorboard<2.14,>=2.13->tensorflow-cpu==2.13.0)
+16.44   Downloading oauthlib-3.2.2-py3-none-any.whl.metadata (7.5 kB)
+16.47 Downloading absl_py-1.0.0-py3-none-any.whl (126 kB)
+16.48    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.7/126.7 kB 202.0 MB/s eta 0:00:00
+16.48 Downloading biopython-1.79-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.7 MB)
+16.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.7/2.7 MB 109.2 MB/s eta 0:00:00
+16.51 Downloading chex-0.0.7-py3-none-any.whl (52 kB)
+16.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.5/52.5 kB 209.8 MB/s eta 0:00:00
+16.52 Downloading dm_haiku-0.0.10-py3-none-any.whl (360 kB)
+16.53    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 360.3/360.3 kB 114.2 MB/s eta 0:00:00
+16.53 Downloading dm_tree-0.1.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (152 kB)
+16.53    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.8/152.8 kB 207.8 MB/s eta 0:00:00
+16.54 Downloading docker-5.0.0-py2.py3-none-any.whl (146 kB)
+16.54    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 147.0/147.0 kB 228.4 MB/s eta 0:00:00
+16.54 Downloading immutabledict-2.0.0-py3-none-any.whl (4.0 kB)
+16.55 Downloading ml_collections-0.1.0-py3-none-any.whl (88 kB)
+16.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.7/88.7 kB 228.8 MB/s eta 0:00:00
+16.55 Downloading numpy-1.24.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+16.81    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.3/17.3 MB 50.9 MB/s eta 0:00:00
+16.82 Downloading pandas-2.0.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.3 MB)
+16.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.3/12.3 MB 84.1 MB/s eta 0:00:00
+16.96 Downloading scipy-1.11.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (36.3 MB)
+17.59    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 36.3/36.3 MB 93.1 MB/s eta 0:00:00
+18.02 Downloading tensorflow_cpu-2.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (225.6 MB)
+72.41    ━━━━━━━━━━━━━━━━━━╸                      106.9/225.6 MB 1.5 MB/s eta 0:01:17
+72.42 ERROR: Exception:
+72.42 Traceback (most recent call last):
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 438, in _error_catcher
+72.42     yield
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 561, in read
+72.42     data = self._fp_read(amt) if not fp_closed else b""
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 527, in _fp_read
+72.42     return self._fp.read(amt) if amt is not None else self._fp.read()
+72.42   File "/opt/miniconda3/lib/python3.10/http/client.py", line 466, in read
+72.42     s = self.fp.read(amt)
+72.42   File "/opt/miniconda3/lib/python3.10/socket.py", line 705, in readinto
+72.42     return self._sock.recv_into(b)
+72.42   File "/opt/miniconda3/lib/python3.10/ssl.py", line 1307, in recv_into
+72.42     return self.read(nbytes, buffer)
+72.42   File "/opt/miniconda3/lib/python3.10/ssl.py", line 1163, in read
+72.42     return self._sslobj.read(len, buffer)
+72.42 TimeoutError: The read operation timed out
+72.42 
+72.42 During handling of the above exception, another exception occurred:
+72.42 
+72.42 Traceback (most recent call last):
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/cli/base_command.py", line 180, in exc_logging_wrapper
+72.42     status = run_func(*args)
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/cli/req_command.py", line 245, in wrapper
+72.42     return func(self, options, args)
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/commands/install.py", line 377, in run
+72.42     requirement_set = resolver.resolve(
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 179, in resolve
+72.42     self.factory.preparer.prepare_linked_requirements_more(reqs)
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 552, in prepare_linked_requirements_more
+72.42     self._complete_partial_requirements(
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/operations/prepare.py", line 467, in _complete_partial_requirements
+72.42     for link, (filepath, _) in batch_download:
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/network/download.py", line 183, in __call__
+72.42     for chunk in chunks:
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/cli/progress_bars.py", line 53, in _rich_progress_bar
+72.42     for chunk in iterable:
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_internal/network/utils.py", line 63, in response_chunks
+72.42     for chunk in response.raw.stream(
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 622, in stream
+72.42     data = self.read(amt=amt, decode_content=decode_content)
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 560, in read
+72.42     with self._error_catcher():
+72.42   File "/opt/miniconda3/lib/python3.10/contextlib.py", line 153, in __exit__
+72.42     self.gen.throw(typ, value, traceback)
+72.42   File "/opt/miniconda3/lib/python3.10/site-packages/pip/_vendor/urllib3/response.py", line 443, in _error_catcher
+72.42     raise ReadTimeoutError(self._pool, None, "Read timed out.")
+72.42 pip._vendor.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Read timed out.
+------
+Dockerfile:42
+--------------------
+  41 |     # Install python dependencies
+  42 | >>> RUN pip install --upgrade --no-cache-dir \
+  43 | >>>     absl-py==1.0.0 \
+  44 | >>>     biopython==1.79 \
+  45 | >>>     chex==0.0.7 \
+  46 | >>>     dm-haiku==0.0.10 \
+  47 | >>>     dm-tree==0.1.8 \
+  48 | >>>     docker==5.0.0 \
+  49 | >>>     immutabledict==2.0.0 \
+  50 | >>>     jax==0.3.25 \
+  51 | >>>     https://storage.googleapis.com/jax-releases/cuda11/jaxlib-0.3.25+cuda11.cudnn805-cp310-cp310-manylinux2014_x86_64.whl \
+  52 | >>>     ml-collections==0.1.0 \
+  53 | >>>     numpy==1.24.3 \
+  54 | >>>     pandas==2.0.3 \
+  55 | >>>     scipy==1.11.1 \
+  56 | >>>     tensorflow-cpu==2.13.0
+  57 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c pip install --upgrade --no-cache-dir     absl-py==1.0.0     biopython==1.79     chex==0.0.7     dm-haiku==0.0.10     dm-tree==0.1.8     docker==5.0.0     immutabledict==2.0.0     jax==0.3.25     https://storage.googleapis.com/jax-releases/cuda11/jaxlib-0.3.25+cuda11.cudnn805-cp310-cp310-manylinux2014_x86_64.whl     ml-collections==0.1.0     numpy==1.24.3     pandas==2.0.3     scipy==1.11.1     tensorflow-cpu==2.13.0" did not complete successfully: exit code: 2
