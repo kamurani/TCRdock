@@ -1,11 +1,20 @@
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
-LABEL authors="Elias Ball" \
+LABEL authors="Elias Ball, Kâmuran İmran" \
     title="TCRdock" \
     Version="2.0.0" \
     description="Docker image containing all dependencies to run TCRdock (https://github.com/phbradley/TCRdock, created by Philip Bradley)"
 
+ENV RUNNING_IN_DOCKER true
 USER root
+
+
+
+
+
+    
+
+#RUN echo 'root:Docker!' | chpasswd
 
 # Install system dependencies
 RUN apt-get update && \
@@ -15,6 +24,9 @@ RUN apt-get update && \
     wget
 
 WORKDIR /opt
+
+# Create and switch to non-root user
+RUN useradd -ms /bin/bash tcrdockuser
 
 # Clone TCRdock
 RUN git clone --depth 1 --branch v2.0.0 https://github.com/phbradley/TCRdock.git
@@ -26,6 +38,15 @@ RUN mkdir -p /opt/miniconda3 && \
     rm -rf /opt/miniconda3/miniconda.sh
 ENV PATH="/opt/miniconda3/bin:$PATH"
 ENV LD_LIBRARY_PATH="/opt/miniconda3/lib:$LD_LIBRARY_PATH"
+
+USER tcrdockuser
+# Uses "git", "ssh-agent" and "history-substring-search" bundled plugins
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)" -- \
+    -p git -p ssh-agent -p 'history-substring-search' \
+    -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
+    -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
+
+USER root
 
 # Install conda dependencies
 RUN conda install -y -c conda-forge \
@@ -53,19 +74,22 @@ RUN pip install --upgrade --no-cache-dir \
     scipy==1.11.1 \
     tensorflow-cpu==2.13.0
 
+
+
 # Temporarily allow write to /opt/TCRdock for all users
 RUN chmod a+rw -R /opt/TCRdock
 
-# Create and switch to non-root user
-RUN useradd -ms /bin/bash tcrdockuser
+
 USER tcrdockuser
+
 
 # Download model parameters and BLAST
 WORKDIR /opt/TCRdock
-RUN mkdir -p alphafold_params/params && \
-    wget -O 'alphafold_params/params/params_model_2_ptm.npz' 'https://www.dropbox.com/s/e3uz9mwxkmmv35z/params_model_2_ptm.npz' && \
-    wget -O 'alphafold_params/params/tcrpmhc_run4_af_mhc_params_891.pkl' 'https://www.dropbox.com/s/jph8v1mfni1q4y8/tcrpmhc_run4_af_mhc_params_891.pkl' && \
-    python download_blast.py
+
+#RUN mkdir -p alphafold_params/params && \
+#    wget -O 'alphafold_params/params/params_model_2_ptm.npz' 'https://www.dropbox.com/s/e3uz9mwxkmmv35z/params_model_2_ptm.npz' && \
+#    wget -O 'alphafold_params/params/tcrpmhc_run4_af_mhc_params_891.pkl' 'https://www.dropbox.com/s/jph8v1mfni1q4y8/tcrpmhc_run4_af_mhc_params_891.pkl' && \
+#    python download_blast.py
 
 # Set correct access permissions to all users
 USER root
@@ -76,6 +100,12 @@ RUN chown -R root:root /opt/TCRdock && \
 # Switch back to non-root user
 USER tcrdockuser
 
+
+
+
 # Create data directory
 RUN mkdir /home/tcrdockuser/data
 WORKDIR /home/tcrdockuser/data
+
+#ENTRYPOINT [ "/bin/zsh" ]
+#
