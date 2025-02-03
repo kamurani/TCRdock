@@ -1,0 +1,1 @@
+python /opt/TCRdock/run_prediction.py --targets setup_files_single/targets.tsv --outfile_prefix pbt1_all_peptides --model_names model_2_ptm --data_dir ../alphafold_params
